@@ -73,7 +73,7 @@ function handleEvent(event) {
   if (text === '!스케줄') {
     return client.replyMessage(event.replyToken, {
       type: 'text',
-      text: nextEscapeSchedule,
+      text: nextEscapeSchedule || '등록된 스케줄이 없어요!',
       });
   }
 
