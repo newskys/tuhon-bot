@@ -71,6 +71,14 @@ function handleEvent(event) {
       });
   }
 
+  if (text.startsWith('!빵스케줄저장 ')) {
+    breadsOfThisWeek = text.split('!빵스케줄저장 ')[1];
+    return client.replyMessage(event.replyToken, {
+      type: 'text',
+      text: '빵스케줄을 저장했습니다.',
+      });
+  }
+
   if (text === '!스케줄') {
     return client.replyMessage(event.replyToken, {
       type: 'text',
