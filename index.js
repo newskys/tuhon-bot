@@ -39,17 +39,27 @@ function handleEvent(event) {
 //     return Promise.resolve(null);
 //   }
 
-  if (event.message.text === '!빵') {
+  const text = event.message.text;
+  if (text === '!빵') {
       return client.replyMessage(event.replyToken, {
         type: 'text',
         text: breadsOfThisWeek || '입력된 빵이 없어요!',
       });
-  } else if (event.message.text.startsWith('!빵입력 ')) {
+  }
+  
+  if (text.startsWith('!빵입력 ')) {
       breadsOfThisWeek = event.message.text;
     return client.replyMessage(event.replyToken, {
         type: 'text',
         text: '빵 목록이 입력되었습니다.'
       });
+  }
+
+  if (text === '@채장희' || text === '@엄효은(어묘)' || text === '@윤주원' || text === '@신규식') {
+    return client.replyMessage(event.replyToken, {
+      type: 'text',
+      text,
+    });
   }
 
   return Promise.resolve(null);
