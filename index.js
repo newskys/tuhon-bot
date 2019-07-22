@@ -34,14 +34,18 @@ app.post('/callback', line.middleware(config), (req, res) => {
 
 const client = new line.Client(config);
 function handleEvent(event) {
-  if (event.type !== 'message' || event.message.type !== 'text') {
-    return Promise.resolve(null);
+//   if (event.type !== 'message' || event.message.type !== 'text') {
+//     return Promise.resolve(null);
+//   }
+
+  if (event.message.text === '!빵') {
+    return client.replyMessage(event.replyToken, {
+        type: 'text',
+        text: event.message.text
+      });
   }
 
-  return client.replyMessage(event.replyToken, {
-    type: 'text',
-    text: event.message.text
-  });
+  return Promise.resolve(null);
 }
 
 
