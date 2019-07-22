@@ -53,14 +53,6 @@ function handleEvent(event) {
       type: 'text',
       text,
     });
-}
-  
-  if (text.startsWith('!빵입력 ')) {
-      breadsOfThisWeek = event.message.text;
-    return client.replyMessage(event.replyToken, {
-        type: 'text',
-        text: '빵 목록이 입력되었습니다.'
-      });
   }
 
   if (text.startsWith('!스케줄저장 ')) {
