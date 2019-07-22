@@ -13,6 +13,25 @@ app.post('/webhook', line.middleware(config), (req, res) => {
     .then((result) => res.json(result));
 });
 
+app.post('/callback', line.middleware(config), (req, res) => {
+    if (req.body.destination) {
+      console.log("Destination User ID: " + req.body.destination);
+    }
+  
+    // req.body.events should be an array of events
+    if (!Array.isArray(req.body.events)) {
+      return res.status(500).end();
+    }
+  
+    // handle events separately
+    Promise.all(req.body.events.map(handleEvent))
+      .then(() => res.end())
+      .catch((err) => {
+        console.error(err);
+        res.status(500).end();
+      });
+  });
+
 const client = new line.Client(config);
 function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
