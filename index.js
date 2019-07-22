@@ -64,6 +64,7 @@ function handleEvent(event) {
   }
 
   if (text.startsWith('!스케줄저장 ')) {
+    nextEscapeSchedule = text.split('!스케줄저장 ')[1];
     return client.replyMessage(event.replyToken, {
       type: 'text',
       text: '스케줄을 저장했습니다.',
