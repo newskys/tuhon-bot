@@ -1,5 +1,6 @@
 const express = require('express');
 const line = require('@line/bot-sdk');
+let breadsOfThisWeek = null;
 
 const config = {
   channelAccessToken: 'x0HymXltKGPbGhuQV4qwvaOgYiltuH9q5ioc21bqICU6Tl2i1YUOF67On2K2h3iUARDx+Bb4ZbT3b2QpPI5RnEVnne9zo/SlDh8vb7TRjtIVkjSMTVfiNRFy7YXB2KoXPMNF7t04Pil1nQ3vxbK3GwdB04t89/1O/w1cDnyilFU=',
@@ -39,9 +40,14 @@ function handleEvent(event) {
 //   }
 
   if (event.message.text === '!빵') {
+      return client.replyMessage(event.replyToken, {
+        type: 'text',
+        text: breadsOfThisWeek || '입력된 빵이 없어요!',
+      });
+  } else if (event.message.text.startsWith('!빵입력')) {
     return client.replyMessage(event.replyToken, {
         type: 'text',
-        text: event.message.text
+        text: 'startsWith'
       });
   }
 
