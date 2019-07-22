@@ -33,8 +33,15 @@ app.post('/callback', line.middleware(config), (req, res) => {
         res.status(500).end();
       });
   });
-
 const client = new line.Client(config);
+
+setTimeout(() => {
+  return client.replyMessage(event.replyToken, {
+        type: 'text',
+        text: 'timeout test',
+      });
+}, 5000);
+
 function handleEvent(event) {
 //   if (event.type !== 'message' || event.message.type !== 'text') {
 //     return Promise.resolve(null);
