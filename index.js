@@ -61,13 +61,13 @@ function handleEvent(event) {
 //   }
 
   const text = event.message.text;
-  if (text === '!빵') {
-    Bread.findOne({date: new Date(formatToTimeZone(datefns.startOfToday(), format, { timeZone }) + 'Z')})
+  if (text === '!오늘의빵') {
+    const bread = Bread.findOne({date: new Date(formatToTimeZone(datefns.startOfToday(), format, { timeZone }) + 'Z')})
     .then(
       bread =>
         client.replyMessage(event.replyToken, {
           type: 'text',
-          text: bread.name,
+          text: bread && bread.name ? `오늘의 빵은 ${bread.name}입니다~` : '입력된 빵이 없어요!',
         })
     )
     .catch(err =>
