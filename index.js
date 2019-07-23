@@ -1,12 +1,28 @@
+require('dotenv').config();
+
 const express = require('express');
 const line = require('@line/bot-sdk');
+const mongoose = require('mongoose');
+const Bread = require('./model/bread');
+const datefns = require('date-fns');
+const { formatToTimeZone } = require('date-fns-timezone');
+
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log('connected to mongodb'))
+.catch(() => console.error(e));
+
 let breadsOfThisWeek = '월: 파이\n화: 마들렌\n수: 크로와상\n목: 깜빠뉴\n금: 스콘';
 let nextEscapeSchedule = null;
 
 const config = {
-  channelAccessToken: 'x0HymXltKGPbGhuQV4qwvaOgYiltuH9q5ioc21bqICU6Tl2i1YUOF67On2K2h3iUARDx+Bb4ZbT3b2QpPI5RnEVnne9zo/SlDh8vb7TRjtIVkjSMTVfiNRFy7YXB2KoXPMNF7t04Pil1nQ3vxbK3GwdB04t89/1O/w1cDnyilFU=',
-  channelSecret: 'c2711a468d90973d0f1fe56315e26803'
+  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
+  channelSecret: process.env.CHANNEL_SECRET,
 };
+
+const timeZone = 'Asia/Seoul';
+// console.log('datefns', formatToTimeZone(new Date(), {timeZone}));
+const format = 'YYYY-MM-DD HH:mm:ss.SSS [GMT]Z (z)'
+// console.log('datefns', formatToTimeZone(datefns.subDays(datefns.lastDayOfWeek(new Date()), 5), format, { timeZone: 'Asia/Seoul' }));
 
 const app = express();
 app.post('/webhook', line.middleware(config), (req, res) => {
@@ -64,11 +80,33 @@ function handleEvent(event) {
   }
 
   if (text.startsWith('!빵스케줄저장 ')) {
-    breadsOfThisWeek = text.split('!빵스케줄저장 ')[1];
-    return client.replyMessage(event.replyToken, {
-      type: 'text',
-      text: '빵스케줄을 저장했습니다.',
+    try {
+      // breadsOfThisWeek = text.split('!빵스케줄저장 ')[1];
+      const content = text.split('!빵스케줄저장 ')[1].trim();
+      let targetDate = datefns.subDays(datefns.lastDayOfWeek(new Date()), 5);
+
+      const splited = content.split('\n');
+      splited.forEach(name => {
+        // const dayAndBread = line.split(':');
+        // const day = dayAndBread[0].trim();
+        // const name = dayAndBread[1].trim();
+        console.log('date', targetDate);
+        console.log('name', name);
+        Bread.create({date: targetDate, name});  
+        targetDate = datefns.addDays(targetDate, 1);
       });
+
+      return client.replyMessage(event.replyToken, {
+        type: 'text',
+        text: '빵스케줄을 저장했습니다.',
+        });
+    } catch (e) {
+      console.err(e);
+      return client.replyMessage(event.replyToken, {
+        type: 'text',
+        text: '빵스케줄 저장에 실패했습니다.',
+        });
+    }
   }
 
   if (text === '!스케줄') {
