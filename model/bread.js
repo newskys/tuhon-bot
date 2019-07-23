@@ -13,7 +13,7 @@ breadSchema.statics.create = function(payload) {
     const bread = new this(payload);
     return bread.save();
 }
-breadSchema.statics.findOneByDate = (date) => this.findOne({ date });
-breadSchema.statics.deleteOneByDate = (date) => this.remove({ date });
+breadSchema.statics.findOneByDate = function(date) { this.findOne({ date }) };
+breadSchema.statics.deleteOneByDate = function(date) { this.remove({ date }) };
 
 module.exports = mongoose.model('Bread', breadSchema);

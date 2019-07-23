@@ -20,9 +20,13 @@ const config = {
 };
 
 const timeZone = 'Asia/Seoul';
+const format = 'YYYY-MM-DD HH:mm:ss.SSS';
+
 // console.log('datefns', formatToTimeZone(new Date(), {timeZone}));
-const format = 'YYYY-MM-DD HH:mm:ss.SSS [GMT]Z (z)'
-// console.log('datefns', formatToTimeZone(datefns.subDays(datefns.lastDayOfWeek(new Date()), 5), format, { timeZone: 'Asia/Seoul' }));
+// const formattedDate = formatToTimeZone(datefns.startOfToday(), format, { timeZone });
+// console.log('datefns', formattedDate);
+// console.log('datefns.startOfToday()', formatToTimeZone(datefns.startOfToday(), {timeZone}));
+// Bread.findOne({date: new Date(formatToTimeZone(datefns.startOfToday(), format, { timeZone }) + 'Z')}).then(item => console.log(item.name));
 
 const app = express();
 app.post('/webhook', line.middleware(config), (req, res) => {
@@ -58,10 +62,20 @@ function handleEvent(event) {
 
   const text = event.message.text;
   if (text === '!빵') {
-      return client.replyMessage(event.replyToken, {
+    Bread.findOne({date: new Date(formatToTimeZone(datefns.startOfToday(), format, { timeZone }) + 'Z')})
+    .then(
+      bread =>
+        client.replyMessage(event.replyToken, {
+          type: 'text',
+          text: bread.name,
+        })
+    )
+    .catch(err =>
+      client.replyMessage(event.replyToken, {
         type: 'text',
-        text: breadsOfThisWeek || '입력된 빵이 없어요!',
-      });
+        text: '입력된 빵이 없어요!',
+      })
+    );
   }
 
   if (text === 'ㄱ') {
