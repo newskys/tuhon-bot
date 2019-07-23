@@ -22,12 +22,6 @@ const config = {
 const timeZone = 'Asia/Seoul';
 const format = 'YYYY-MM-DD HH:mm:ss.SSS';
 
-// console.log('datefns', formatToTimeZone(new Date(), {timeZone}));
-// const formattedDate = formatToTimeZone(datefns.startOfToday(), format, { timeZone });
-// console.log('datefns', formattedDate);
-// console.log('datefns.startOfToday()', formatToTimeZone(datefns.startOfToday(), {timeZone}));
-Bread.findOne({date: datefns.startOfToday()}).then(item => console.log(item.name));
-
 const app = express();
 app.post('/webhook', line.middleware(config), (req, res) => {
   Promise
@@ -40,12 +34,10 @@ app.post('/callback', line.middleware(config), (req, res) => {
       console.log("Destination User ID: " + req.body.destination);
     }
   
-    // req.body.events should be an array of events
     if (!Array.isArray(req.body.events)) {
       return res.status(500).end();
     }
   
-    // handle events separately
     Promise.all(req.body.events.map(handleEvent))
       .then(() => res.end())
       .catch((err) => {
@@ -68,7 +60,7 @@ function handleEvent(event) {
         console.log('bread', bread);
         return client.replyMessage(event.replyToken, {
           type: 'text',
-          text: bread && bread.name ? `오늘의 빵은 ${bread.name}입니다~` : '입력된 빵이 없어요!',
+          text: bread && bread.name ? `오늘의 빵은 🍞${bread.name}🍞입니다~` : '입력된 빵이 없어요!',
         })
       }
     )
@@ -87,7 +79,26 @@ function handleEvent(event) {
         console.log('bread', bread);
         return client.replyMessage(event.replyToken, {
           type: 'text',
-          text: bread && bread.name ? `내일의 빵은 ${bread.name}입니다~` : '내일의 빵이 없어요!',
+          text: bread && bread.name ? `내일의 빵은 🍞${bread.name}🍞입니다~` : '내일의 빵이 없어요!',
+        })
+      }
+    )
+    .catch(err =>
+      client.replyMessage(event.replyToken, {
+        type: 'text',
+        text: '입력된 빵이 없어요!',
+      })
+    );
+  }
+  
+  if (text === '!빵') {
+    Bread.findOne({date: datefns.addDays(datefns.startOfToday(), 1)})
+    .then(
+      bread => {
+        console.log('bread', bread);
+        return client.replyMessage(event.replyToken, {
+          type: 'text',
+          text: bread && bread.name ? `내일의 빵은 🍞${bread.name}🍞입니다~` : '내일의 빵이 없어요!',
         })
       }
     )
