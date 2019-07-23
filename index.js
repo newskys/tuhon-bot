@@ -26,7 +26,7 @@ const format = 'YYYY-MM-DD HH:mm:ss.SSS';
 // const formattedDate = formatToTimeZone(datefns.startOfToday(), format, { timeZone });
 // console.log('datefns', formattedDate);
 // console.log('datefns.startOfToday()', formatToTimeZone(datefns.startOfToday(), {timeZone}));
-// Bread.findOne({date: new Date(formatToTimeZone(datefns.startOfToday(), format, { timeZone }) + 'Z')}).then(item => console.log(item.name));
+Bread.findOne({date: datefns.startOfToday()}).then(item => console.log(item.name));
 
 const app = express();
 app.post('/webhook', line.middleware(config), (req, res) => {
