@@ -80,6 +80,25 @@ function handleEvent(event) {
     );
   }
 
+  if (text === '!내일의빵') {
+    Bread.findOne({date: datefns.addDays(datefns.startOfToday(), 1)})
+    .then(
+      bread => {
+        console.log('bread', bread);
+        return client.replyMessage(event.replyToken, {
+          type: 'text',
+          text: bread && bread.name ? `내일의 빵은 ${bread.name}입니다~` : '내일의 빵이 없어요!',
+        })
+      }
+    )
+    .catch(err =>
+      client.replyMessage(event.replyToken, {
+        type: 'text',
+        text: '입력된 빵이 없어요!',
+      })
+    );
+  }
+
   if (text === 'ㄱ') {
     return client.replyMessage(event.replyToken, {
       type: 'text',
@@ -97,15 +116,11 @@ function handleEvent(event) {
 
   if (text.startsWith('!빵스케줄저장 ')) {
     try {
-      // breadsOfThisWeek = text.split('!빵스케줄저장 ')[1];
       const content = text.split('!빵스케줄저장 ')[1].trim();
       let targetDate = datefns.subDays(datefns.lastDayOfWeek(new Date()), 5);
 
       const splited = content.split('\n');
       splited.forEach(name => {
-        // const dayAndBread = line.split(':');
-        // const day = dayAndBread[0].trim();
-        // const name = dayAndBread[1].trim();
         console.log('date', targetDate);
         console.log('name', name);
         Bread.create({date: targetDate, name});  
