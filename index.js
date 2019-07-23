@@ -62,7 +62,7 @@ function handleEvent(event) {
 
   const text = event.message.text;
   if (text === '!오늘의빵') {
-    Bread.findOne({date: new Date(formatToTimeZone(datefns.startOfToday(), format, { timeZone }) + 'Z')})
+    Bread.findOne({date: datefns.startOfToday()})
     .then(
       bread => {
         console.log('bread', bread);
