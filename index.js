@@ -137,18 +137,20 @@ function handleEvent(event) {
   text === '!마들렌' ||
   text === '!번' || 
   text === '!파이') {
+    breadText = text.split('!')[1];
     Bread.findOne()
-    .where('name').equals(text)
+    .where('name').equals(breadText)
     .sort('-date')
     .then(
       bread => {
+        console.log('bread', bread);
         const formattedWeek = datefns.format(bread.date, formatDayAndWeek, { locale: koLocale });
         const isFuture = bread.date > new Date();
         const diff = Math.abs(datefns.differenceInCalendarDays(bread.date, new Date()));
         const extraText = isFuture ? `${diff}일 남았습니다.` : `${diff}일 경과했습니다.`;
         return client.replyMessage(event.replyToken, {
           type: 'text',
-          text: bread ? `🍞${text}🍞\n\n${formattedWeek} 등장${isFuture ? '합니다' : '했습니다'}!\n${extraText}` : `빵 정보가 없어요!`,
+          text: bread ? `🍞${breadText}🍞\n\n${formattedWeek} 등장${isFuture ? '합니다' : '했습니다'}!\n${extraText}` : `빵 정보가 없어요!`,
         });
       }
     )
