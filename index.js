@@ -5,6 +5,7 @@ const line = require('@line/bot-sdk');
 const mongoose = require('mongoose');
 const Bread = require('./model/bread');
 const datefns = require('date-fns');
+const koLocale = require('date-fns/locale/ko');
 const { formatToTimeZone } = require('date-fns-timezone');
 
 mongoose.connect(process.env.MONGO_URI)
@@ -21,8 +22,23 @@ const config = {
 
 const timeZone = 'Asia/Seoul';
 const format = 'YYYY-MM-DD HH:mm:ss.SSS';
+const formatShortWeek = 'ddd';
 
 const app = express();
+
+// Bread.find()
+//     .where('date').gte(datefns.subDays(datefns.lastDayOfWeek(new Date()), 5))
+//     .where('date').lte(datefns.lastDayOfWeek(new Date()))
+//     .then(
+//       breads => {
+//         const weekBreads = breads.map(bread => {
+//           const korWeekName = datefns.format(bread.date, formatShortWeek, { locale: koLocale });
+//           return `${korWeekName}: ${bread.name}`;
+//         });
+//         console.log(weekBreads.join('\n'));
+//       }
+//     )
+
 app.post('/webhook', line.middleware(config), (req, res) => {
   Promise
     .all(req.body.events.map(handleEvent))
@@ -92,13 +108,22 @@ function handleEvent(event) {
   }
   
   if (text === '!빵') {
-    Bread.findOne({date: datefns.addDays(datefns.startOfToday(), 1)})
+    Bread.find()
+    .where('date').gte(datefns.subDays(datefns.lastDayOfWeek(new Date()), 5))
+    .where('date').lte(datefns.lastDayOfWeek(new Date()))
     .then(
-      bread => {
-        console.log('bread', bread);
+      breads => {
+        const weekBreads = breads.map(bread => {
+          const korWeekName = datefns.format(bread.date, formatShortWeek, { locale: koLocale });
+          return `${korWeekName}: ${bread.name}`;
+        });
+        
+        console.log('weekBreads', weekBreads);
+
+        weekBreads.join('\n');
         return client.replyMessage(event.replyToken, {
           type: 'text',
-          text: bread && bread.name ? `내일의 빵은 🍞${bread.name}🍞입니다~` : '내일의 빵이 없어요!',
+          text: `🍞주간 빵🍞\n\n${weekBreads.join('\n')}`,
         })
       }
     )
