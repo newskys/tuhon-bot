@@ -12,7 +12,6 @@ mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log('connected to mongodb'))
 .catch(() => console.error(e));
 
-let breadsOfThisWeek = '월: 파이\n화: 마들렌\n수: 크로와상\n목: 깜빠뉴\n금: 스콘';
 let nextEscapeSchedule = null;
 
 const config = {
@@ -93,6 +92,15 @@ function handleEvent(event) {
 //   }
 
   const text = event.message.text;
+
+  if (text.startsWith('!내방탈출')) {
+    console.log('client', client);
+    return client.replyMessage(event.replyToken, {
+      type: 'text',
+      text: '저장되었습니다.',
+    })
+  }
+
   if (text === '!오늘의빵') {
     Bread.findOne({date: datefns.startOfToday()})
     .then(
