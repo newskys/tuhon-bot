@@ -23,9 +23,29 @@ const config = {
 const timeZone = 'Asia/Seoul';
 const format = 'YYYY-MM-DD HH:mm:ss.SSS';
 const formatShortWeek = 'ddd';
+const formatDayAndWeek = 'Do (dddd)';
 
 const app = express();
 
+// const text = '크로와상';
+// Bread.findOne()
+//     .where('name').equals(text)
+//     .sort('-date')
+//     .then(
+//       bread => {
+//         const formattedWeek = datefns.format(bread.date, formatDayAndWeek, { locale: koLocale });
+//         const isFuture = bread.date > new Date();
+//         const diff = Math.abs(datefns.differenceInCalendarDays(bread.date, new Date()));
+//         const extraText = isFuture ? `${diff}일 남았습니다.` : `${diff}일 경과했습니다.`;
+//         console.log('formattedWeek', formattedWeek);
+//         console.log('isFuture', isFuture);
+//         console.log(`🍞${text}🍞\n\n${formattedWeek} 등장${isFuture ? '합니다' : '했습니다'}!\n${extraText}`);
+//         // return client.replyMessage(event.replyToken, {
+//         //   type: 'text',
+//         //   text: bread ? `🍞${'크로와상'}🍞\n\n${formattedWeek} 등장` : `빵 정보가 없어요!`,
+//         // });
+//       }
+//     )
 // Bread.find()
 //     .where('date').gte(datefns.subDays(datefns.lastDayOfWeek(new Date()), 5))
 //     .where('date').lte(datefns.lastDayOfWeek(new Date()))
@@ -38,6 +58,10 @@ const app = express();
 //         console.log(weekBreads.join('\n'));
 //       }
 //     )
+
+app.get('/',(req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
 
 app.post('/webhook', line.middleware(config), (req, res) => {
   Promise
@@ -105,6 +129,29 @@ function handleEvent(event) {
         text: '입력된 빵이 없어요!',
       })
     );
+  }
+  if (text === '!크로와상' || 
+  text === '!깜빠뉴' || 
+  text === '!베이글' || 
+  text === '!스콘' ||
+  text === '!마들렌' ||
+  text === '!번' || 
+  text === '!파이') {
+    Bread.findOne()
+    .where('name').equals(text)
+    .sort('-date')
+    .then(
+      bread => {
+        const formattedWeek = datefns.format(bread.date, formatDayAndWeek, { locale: koLocale });
+        const isFuture = bread.date > new Date();
+        const diff = Math.abs(datefns.differenceInCalendarDays(bread.date, new Date()));
+        const extraText = isFuture ? `${diff}일 남았습니다.` : `${diff}일 경과했습니다.`;
+        return client.replyMessage(event.replyToken, {
+          type: 'text',
+          text: bread ? `🍞${text}🍞\n\n${formattedWeek} 등장${isFuture ? '합니다' : '했습니다'}!\n${extraText}` : `빵 정보가 없어요!`,
+        });
+      }
+    )
   }
   
   if (text === '!빵') {
