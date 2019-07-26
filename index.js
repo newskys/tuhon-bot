@@ -97,13 +97,13 @@ function handleEvent(event) {
 
   const text = event.message.text;
 
-  if (text.startsWith('!내방탈출')) {
-    console.log('client', client);
-    return client.replyMessage(event.replyToken, {
-      type: 'text',
-      text: '저장되었습니다.',
-    })
-  }
+  // if (text.startsWith('!내방탈출')) {
+  //   console.log('client', client);
+  //   return client.replyMessage(event.replyToken, {
+  //     type: 'text',
+  //     text: '저장되었습니다.',
+  //   })
+  // }
 
   if (text === '!오늘의빵') {
     Bread.findOne({date: datefns.startOfToday()})
