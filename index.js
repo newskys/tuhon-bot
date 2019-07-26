@@ -224,9 +224,49 @@ function handleEvent(event) {
 
   if (text === '!test') {
     return client.replyMessage(event.replyToken, {
-      "type": "sticker",
-      "packageId": "1",
-      "stickerId": "1"
+      "type": "imagemap",
+      "baseUrl": "https://example.com/bot/images/rm001",
+      "altText": "This is an imagemap",
+      "baseSize": {
+          "width": 1040,
+          "height": 1040
+      },
+      "video": {
+          "originalContentUrl": "https://example.com/video.mp4",
+          "previewImageUrl": "https://example.com/video_preview.jpg",
+          "area": {
+              "x": 0,
+              "y": 0,
+              "width": 1040,
+              "height": 585
+          },
+          "externalLink": {
+              "linkUri": "https://example.com/see_more.html",
+              "label": "See More"
+          }
+      },
+      "actions": [
+          {
+              "type": "uri",
+              "linkUri": "https://example.com/",
+              "area": {
+                  "x": 0,
+                  "y": 586,
+                  "width": 520,
+                  "height": 454
+              }
+          },
+          {
+              "type": "message",
+              "text": "Hello",
+              "area": {
+                  "x": 520,
+                  "y": 586,
+                  "width": 520,
+                  "height": 454
+              }
+          }
+      ]
     });
   }
 
