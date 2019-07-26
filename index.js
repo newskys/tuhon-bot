@@ -227,7 +227,7 @@ function handleEvent(event) {
       "type": "bubble",
       "hero": {
         "type": "image",
-        "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_2_restaurant.png",
+        "url": "https://phinf.pstatic.net/dthumb/?src=%22https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8195821%2F81958214351.jpg%22&service=selective&type=f480_480_q90",
         "size": "full",
         "aspectRatio": "20:13",
         "aspectMode": "cover"
@@ -238,7 +238,7 @@ function handleEvent(event) {
         "spacing": "md",
         "action": {
           "type": "uri",
-          "uri": "https://linecorp.com"
+          "uri": "https://naver.com"
         },
         "contents": [
           {
@@ -258,7 +258,7 @@ function handleEvent(event) {
                 "contents": [
                   {
                     "type": "icon",
-                    "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/restaurant_regular_32.png"
+                    "url": "https://phinf.pstatic.net/dthumb/?src=%22https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8195821%2F81958214351.jpg%22&service=selective&type=f480_480_q90"
                   },
                   {
                     "type": "text",
@@ -282,7 +282,7 @@ function handleEvent(event) {
                 "contents": [
                   {
                     "type": "icon",
-                    "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/restaurant_large_32.png"
+                    "url": "https://phinf.pstatic.net/dthumb/?src=%22https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8195821%2F81958214351.jpg%22&service=selective&type=f480_480_q90"
                   },
                   {
                     "type": "text",
