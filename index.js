@@ -4,6 +4,7 @@ const express = require('express');
 const line = require('@line/bot-sdk');
 const mongoose = require('mongoose');
 const Bread = require('./model/bread');
+const EscapeRoom = require('./model/escapeRoom');
 const datefns = require('date-fns');
 const koLocale = require('date-fns/locale/ko');
 const { formatToTimeZone } = require('date-fns-timezone');
@@ -57,6 +58,9 @@ const app = express();
 //         console.log(weekBreads.join('\n'));
 //       }
 //     )
+
+// const scheduledDate = datefns.parse('07/27 18:00', 'DD/MM HH:mm', new Date(datefns.getYear(new Date()), 0, 1));
+// console.log('scheduledDate', scheduledDate);
 
 app.get('/',(req, res) => {
   res.sendFile(__dirname + '/index.html');
@@ -199,12 +203,31 @@ function handleEvent(event) {
     });
   }
 
-  if (text.startsWith('!스케줄저장 ')) {
-    nextEscapeSchedule = text.split('!스케줄저장 ')[1];
-    return client.replyMessage(event.replyToken, {
-      type: 'text',
-      text: '스케줄을 저장했습니다.',
-      });
+  if (text === '!다음방탈출') {
+    // const 
+  }
+
+  if (text.startsWith('!방탈출저장 ')) {
+    const nextEscapeSchedule = text.split('!방탈출저장 ')[1].trim();
+    const schedules = nextEscapeSchedule.split('\n');
+
+    try {
+      const targetDate = datefns.parse(schedules[0].trim(), 'YYYY-DD-MM HH:mm', new Date(datefns.getYear(new Date()), 0, 1));
+      const targetThemeName = schedules[1].trim();
+      const targetBrand = schedules[2].trim();
+      console.log('targetDate', targetDate);
+      EscapeRoom.create({ date: targetDate, name: targetThemeName, brand: targetBrand, });  
+      return client.replyMessage(event.replyToken, {
+        type: 'text',
+        text: '스케줄을 저장했습니다.',
+        });
+    } catch (e) {
+      console.err(e);
+      return client.replyMessage(event.replyToken, {
+        type: 'text',
+        text: '스케줄을 저장하지 못했습니다.',
+        });
+    }
   }
 
   if (text.startsWith('!빵스케줄저장 ')) {
