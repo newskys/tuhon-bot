@@ -21,7 +21,7 @@ const config = {
 };
 
 const timeZone = 'Asia/Seoul';
-const format = 'YYYY-MM-DD HH:mm:ss.SSS';
+const formatFullDate = 'MMM Do (ddd) HH:mm';
 const formatShortWeek = 'ddd';
 const formatDayAndWeek = 'Do (dddd)';
 
@@ -204,11 +204,26 @@ function handleEvent(event) {
   }
 
   if (text === '!다음방탈출') {
-    // const 
+    try {
+      EscapeRoom.findOne()
+    .sort('date')
+    .then(escapeRoom => {
+      return client.replyMessage(event.replyToken, {
+        type: 'text',
+        text: `🏃‍♂️다음 방탈출🏃‍♀️\n${escapeRoom.name}\n${escapeRoom.brand}\n\n${datefns.format(escapeRoom.date, formatFullDate, { locale: koLocale })}`,
+        });
+    });
+    } catch (e) {
+      console.err(e);
+      return client.replyMessage(event.replyToken, {
+        type: 'text',
+        text: '다음 방탈출이 없습니다.',
+        });
+    }
   }
 
-  if (text.startsWith('!방탈출저장 ')) {
-    const nextEscapeSchedule = text.split('!방탈출저장 ')[1].trim();
+  if (text.startsWith('!방탈출저장')) {
+    const nextEscapeSchedule = text.split('!방탈출저장')[1].trim();
     const schedules = nextEscapeSchedule.split('\n');
 
     try {
@@ -230,9 +245,9 @@ function handleEvent(event) {
     }
   }
 
-  if (text.startsWith('!빵스케줄저장 ')) {
+  if (text.startsWith('!빵스케줄저장')) {
     try {
-      const content = text.split('!빵스케줄저장 ')[1].trim();
+      const content = text.split('!빵스케줄저장')[1].trim();
       let targetDate = datefns.subDays(datefns.lastDayOfWeek(new Date()), 5);
 
       const splited = content.split('\n');
