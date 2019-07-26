@@ -210,7 +210,7 @@ function handleEvent(event) {
     .then(escapeRoom => {
       return client.replyMessage(event.replyToken, {
         type: 'text',
-        text: `🏃‍♂️다음 방탈출🏃‍♀️\n${escapeRoom.name}\n${escapeRoom.brand}\n\n${datefns.format(escapeRoom.date, formatFullDate, { locale: koLocale })}`,
+        text: `🧩다음 방탈출🔐\n${escapeRoom.name}\n${escapeRoom.brand}\n\n${datefns.format(escapeRoom.date, formatFullDate, { locale: koLocale })}`,
         });
     });
     } catch (e) {
