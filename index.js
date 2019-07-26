@@ -222,6 +222,98 @@ function handleEvent(event) {
     }
   }
 
+  if (text === '!test') {
+    return client.replyMessage(event.replyToken, {
+      "type": "bubble",
+      "hero": {
+        "type": "image",
+        "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_2_restaurant.png",
+        "size": "full",
+        "aspectRatio": "20:13",
+        "aspectMode": "cover"
+      },
+      "body": {
+        "type": "box",
+        "layout": "vertical",
+        "spacing": "md",
+        "action": {
+          "type": "uri",
+          "uri": "https://linecorp.com"
+        },
+        "contents": [
+          {
+            "type": "text",
+            "text": "스콘",
+            "size": "xl",
+            "weight": "bold"
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "baseline",
+                "contents": [
+                  {
+                    "type": "icon",
+                    "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/restaurant_regular_32.png"
+                  },
+                  {
+                    "type": "text",
+                    "text": "크랜베리 스콘",
+                    "weight": "bold",
+                    "margin": "sm",
+                    "flex": 0
+                  },
+                  {
+                    "type": "text",
+                    "text": "1300₩",
+                    "size": "sm",
+                    "align": "end",
+                    "color": "#aaaaaa"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "baseline",
+                "contents": [
+                  {
+                    "type": "icon",
+                    "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/restaurant_large_32.png"
+                  },
+                  {
+                    "type": "text",
+                    "text": "얼그레이 스콘",
+                    "weight": "bold",
+                    "margin": "sm",
+                    "flex": 0
+                  },
+                  {
+                    "type": "text",
+                    "text": "1300₩",
+                    "size": "sm",
+                    "align": "end",
+                    "color": "#aaaaaa"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "9:30 ~ 11:00 / 15:00 ~ 17:00",
+            "wrap": true,
+            "color": "#aaaaaa",
+            "size": "xxs"
+          }
+        ]
+      }
+    });
+  }
+
   if (text.startsWith('!방탈출저장')) {
     const nextEscapeSchedule = text.split('!방탈출저장')[1].trim();
     const schedules = nextEscapeSchedule.split('\n');
