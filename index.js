@@ -224,49 +224,39 @@ function handleEvent(event) {
 
   if (text === '!test') {
     return client.replyMessage(event.replyToken, {
-      "type": "imagemap",
-      "baseUrl": "https://example.com/bot/images/rm001",
-      "altText": "This is an imagemap",
-      "baseSize": {
-          "width": 1040,
-          "height": 1040
-      },
-      "video": {
-          "originalContentUrl": "https://example.com/video.mp4",
-          "previewImageUrl": "https://example.com/video_preview.jpg",
-          "area": {
-              "x": 0,
-              "y": 0,
-              "width": 1040,
-              "height": 585
-          },
-          "externalLink": {
-              "linkUri": "https://example.com/see_more.html",
-              "label": "See More"
-          }
-      },
-      "actions": [
-          {
+      "type": "template",
+      "altText": "This is a buttons template",
+      "template": {
+          "type": "buttons",
+          "thumbnailImageUrl": "https://example.com/bot/images/image.jpg",
+          "imageAspectRatio": "rectangle",
+          "imageSize": "cover",
+          "imageBackgroundColor": "#FFFFFF",
+          "title": "Menu",
+          "text": "Please select",
+          "defaultAction": {
               "type": "uri",
-              "linkUri": "https://example.com/",
-              "area": {
-                  "x": 0,
-                  "y": 586,
-                  "width": 520,
-                  "height": 454
-              }
+              "label": "View detail",
+              "uri": "http://example.com/page/123"
           },
-          {
-              "type": "message",
-              "text": "Hello",
-              "area": {
-                  "x": 520,
-                  "y": 586,
-                  "width": 520,
-                  "height": 454
+          "actions": [
+              {
+                "type": "postback",
+                "label": "Buy",
+                "data": "action=buy&itemid=123"
+              },
+              {
+                "type": "postback",
+                "label": "Add to cart",
+                "data": "action=add&itemid=123"
+              },
+              {
+                "type": "uri",
+                "label": "View detail",
+                "uri": "http://example.com/page/123"
               }
-          }
-      ]
+          ]
+      }
     });
   }
 
