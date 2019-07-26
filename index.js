@@ -225,89 +225,14 @@ function handleEvent(event) {
   if (text === '!test') {
     return client.replyMessage(event.replyToken, {
       "type": "bubble",
-      "hero": {
-        "type": "image",
-        "url": "https://phinf.pstatic.net/dthumb/?src=%22https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8195821%2F81958214351.jpg%22&service=selective&type=f480_480_q90",
-        "size": "full",
-        "aspectRatio": "20:13",
-        "aspectMode": "cover"
-      },
       "body": {
         "type": "box",
-        "layout": "vertical",
-        "spacing": "md",
-        "action": {
-          "type": "uri",
-          "uri": "https://naver.com"
-        },
+        "layout": "horizontal",
         "contents": [
           {
-            "type": "text",
-            "text": "스콘",
-            "size": "xl",
-            "weight": "bold"
-          },
-          {
-            "type": "box",
-            "layout": "vertical",
-            "spacing": "sm",
-            "contents": [
-              {
-                "type": "box",
-                "layout": "baseline",
-                "contents": [
-                  {
-                    "type": "icon",
-                    "url": "https://phinf.pstatic.net/dthumb/?src=%22https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8195821%2F81958214351.jpg%22&service=selective&type=f480_480_q90"
-                  },
-                  {
-                    "type": "text",
-                    "text": "크랜베리 스콘",
-                    "weight": "bold",
-                    "margin": "sm",
-                    "flex": 0
-                  },
-                  {
-                    "type": "text",
-                    "text": "1300₩",
-                    "size": "sm",
-                    "align": "end",
-                    "color": "#aaaaaa"
-                  }
-                ]
-              },
-              {
-                "type": "box",
-                "layout": "baseline",
-                "contents": [
-                  {
-                    "type": "icon",
-                    "url": "https://phinf.pstatic.net/dthumb/?src=%22https%3A%2F%2Fshopping-phinf.pstatic.net%2Fmain_8195821%2F81958214351.jpg%22&service=selective&type=f480_480_q90"
-                  },
-                  {
-                    "type": "text",
-                    "text": "얼그레이 스콘",
-                    "weight": "bold",
-                    "margin": "sm",
-                    "flex": 0
-                  },
-                  {
-                    "type": "text",
-                    "text": "1300₩",
-                    "size": "sm",
-                    "align": "end",
-                    "color": "#aaaaaa"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "text",
-            "text": "9:30 ~ 11:00 / 15:00 ~ 17:00",
-            "wrap": true,
-            "color": "#aaaaaa",
-            "size": "xxs"
+            "type": "image",
+            "url": "https://example.com/flex/images/image.jpg",
+            "size": "md"
           }
         ]
       }
