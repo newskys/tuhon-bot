@@ -212,7 +212,7 @@ function handleEvent(event) {
     const schedules = nextEscapeSchedule.split('\n');
 
     try {
-      const targetDate = datefns.parse(schedules[0].trim(), 'YYYY-DD-MM HH:mm', new Date(datefns.getYear(new Date()), 0, 1));
+      const targetDate = datefns.parse(schedules[0].trim(), 'MM-DD HH:mm', new Date(datefns.getYear(new Date()), 0, 1));
       const targetThemeName = schedules[1].trim();
       const targetBrand = schedules[2].trim();
       console.log('targetDate', targetDate);
