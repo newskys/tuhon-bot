@@ -90,6 +90,11 @@ app.post('/callback', line.middleware(config), (req, res) => {
   });
 const client = new line.Client(config);
 
+EscapeRoom.findOne()
+    .where('date').lte(new Date())
+    .sort('date')
+    .then(escapeRoom => console.log(escapeRoom));
+
 function handleEvent(event) {
 //   if (event.type !== 'message' || event.message.type !== 'text') {
 //     return Promise.resolve(null);
@@ -208,23 +213,23 @@ function handleEvent(event) {
   }
 
   if (text === '!다음방탈출') {
-    try {
-      EscapeRoom.findOne()
-    .where('date').gte(new Date())
+    EscapeRoom.findOne()
+    .where('date').lte(new Date())
     .sort('date')
     .then(escapeRoom => {
+      try {
       return client.replyMessage(event.replyToken, {
         type: 'text',
         text: `🧩다음 방탈출🔐\n${escapeRoom.name}\n${escapeRoom.brand}\n\n${datefns.format(escapeRoom.date, formatFullDate, { locale: koLocale })}`,
         });
+      } catch (e) {
+        console.err(e);
+        return client.replyMessage(event.replyToken, {
+          type: 'text',
+          text: '다음 방탈출이 없습니다.',
+          });
+      }
     });
-    } catch (e) {
-      console.err(e);
-      return client.replyMessage(event.replyToken, {
-        type: 'text',
-        text: '다음 방탈출이 없습니다.',
-        });
-    }
   }
 
   if (text === '!test') {
