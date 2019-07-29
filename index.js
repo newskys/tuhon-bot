@@ -209,7 +209,7 @@ function handleEvent(event) {
 
   if (text === '!다음방탈출') {
     EscapeRoom.findOne()
-    .where('date').lte(new Date())
+    .where('date').gte(new Date())
     .sort('date')
     .then(escapeRoom => {
       try {
@@ -219,7 +219,7 @@ function handleEvent(event) {
         text: `🧩다음 방탈출🔐\n${escapeRoom.name}\n${escapeRoom.brand}\n\n${formattedDay}`,
         });
       } catch (e) {
-        console.err(e);
+        console.error(e);
         return client.replyMessage(event.replyToken, {
           type: 'text',
           text: '다음 방탈출이 없습니다.',
@@ -299,7 +299,9 @@ function handleEvent(event) {
     const schedules = nextEscapeSchedule.split('\n');
 
     try {
-      const targetDate = datefns.parse(schedules[0].trim(), 'MM-DD HH:mm', new Date(datefns.getYear(new Date()), 0, 1));
+      // const targetDate = datefns.parse(schedules[0].trim(), 'MM-DD HH:mm', new Date(datefns.getYear(new Date()), 0, 1));
+      const targetDate = datefns.parse(schedules[0].trim(), 'MM-DD HH:mm');
+      targetDate.setFullYear(datefns.getYear(new Date()));
       const targetThemeName = schedules[1].trim();
       const targetBrand = schedules[2].trim();
       console.log('targetDate', targetDate);
@@ -309,7 +311,7 @@ function handleEvent(event) {
         text: '스케줄을 저장했습니다.',
         });
     } catch (e) {
-      console.err(e);
+      console.error(e);
       return client.replyMessage(event.replyToken, {
         type: 'text',
         text: '스케줄을 저장하지 못했습니다.',
@@ -335,7 +337,7 @@ function handleEvent(event) {
         text: '빵스케줄을 저장했습니다.',
         });
     } catch (e) {
-      console.err(e);
+      console.error(e);
       return client.replyMessage(event.replyToken, {
         type: 'text',
         text: '빵스케줄 저장에 실패했습니다.',
