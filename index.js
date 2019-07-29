@@ -213,7 +213,7 @@ function handleEvent(event) {
     .sort('date')
     .then(escapeRoom => {
       try {
-        const formattedDay = datefns.formatRelative(escapeRoom.date, formatFullDate, { locale: koLocale });
+        const formattedDay = datefns.format(escapeRoom.date, formatFullDate, { locale: koLocale });
       return client.replyMessage(event.replyToken, {
         type: 'text',
         text: `🧩다음 방탈출🔐\n${escapeRoom.name}\n${escapeRoom.brand}\n\n${formattedDay}`,
