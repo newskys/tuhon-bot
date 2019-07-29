@@ -90,11 +90,6 @@ app.post('/callback', line.middleware(config), (req, res) => {
   });
 const client = new line.Client(config);
 
-EscapeRoom.findOne()
-    .where('date').lte(new Date())
-    .sort('date')
-    .then(escapeRoom => console.log(escapeRoom));
-
 function handleEvent(event) {
 //   if (event.type !== 'message' || event.message.type !== 'text') {
 //     return Promise.resolve(null);
@@ -218,9 +213,10 @@ function handleEvent(event) {
     .sort('date')
     .then(escapeRoom => {
       try {
+        const formattedDay = datefns.format(escapeRoom.date, formatDayAndWeek, { locale: koLocale });
       return client.replyMessage(event.replyToken, {
         type: 'text',
-        text: `🧩다음 방탈출🔐\n${escapeRoom.name}\n${escapeRoom.brand}\n\n${datefns.format(escapeRoom.date, formatFullDate, { locale: koLocale })}`,
+        text: `🧩다음 방탈출🔐\n${escapeRoom.name}\n${escapeRoom.brand}\n\n${formattedDay}`,
         });
       } catch (e) {
         console.err(e);
