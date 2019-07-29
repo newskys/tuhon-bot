@@ -21,7 +21,7 @@ const config = {
 };
 
 const timeZone = 'Asia/Seoul';
-const formatFullDate = 'MMM Do (ddd) HH:mm';
+const formatFullDate = 'MMM Do (dddd) HH:mm';
 const formatShortWeek = 'ddd';
 const formatDayAndWeek = 'Do (dddd)';
 
@@ -203,9 +203,14 @@ function handleEvent(event) {
     });
   }
 
+  if (text.startsWith('!방탈출삭제 ')) {
+
+  }
+
   if (text === '!다음방탈출') {
     try {
       EscapeRoom.findOne()
+    .where('date').gte(new Date())
     .sort('date')
     .then(escapeRoom => {
       return client.replyMessage(event.replyToken, {
@@ -224,44 +229,67 @@ function handleEvent(event) {
 
   if (text === '!test') {
     return client.replyMessage(event.replyToken, {
-      "type": "bubble",
-      "header": {
-        "type": "box",
-        "layout": "vertical",
-        "contents": [
-          {
-            "type": "text",
-            "text": "Header text"
+      "type": "carousel",
+      "contents": [
+        {
+          "type": "bubble",
+          "body": {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "text",
+                "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                "wrap": true
+              }
+            ]
+          },
+          "footer": {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "button",
+                "style": "primary",
+                "action": {
+                  "type": "uri",
+                  "label": "Go",
+                  "uri": "https://example.com"
+                }
+              }
+            ]
           }
-        ]
-      },
-      "hero": {
-        "type": "image",
-        "url": "https://example.com/flex/images/image.jpg"
-      },
-      "body": {
-        "type": "box",
-        "layout": "vertical",
-        "contents": [
-          {
-            "type": "text",
-            "text": "Body text"
+        },
+        {
+          "type": "bubble",
+          "body": {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "text",
+                "text": "Hello, World!",
+                "wrap": true
+              }
+            ]
+          },
+          "footer": {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "button",
+                "style": "primary",
+                "action": {
+                  "type": "uri",
+                  "label": "Go",
+                  "uri": "https://example.com"
+                }
+              }
+            ]
           }
-        ]
-      },
-      "footer": {
-        "type": "box",
-        "layout": "vertical",
-        "contents": [
-          {
-            "type": "text",
-            "text": "Footer text"
-          }
-        ]
-      },
-      "styles": {
-        "comment": "See the example of a bubble style object"
-      }
+        }
+      ]
     });
   }
 
