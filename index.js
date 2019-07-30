@@ -352,7 +352,7 @@ function handleEvent(event) {
       });
   }
 
-  if (text === '@채장희' || text === '@엄효은(어묘)' || text === '@윤주원' || text === '@신규식') {
+  if (text.trim() === '@채장희' || text.trim() === '@엄효은(어묘)' || text.trim() === '@윤주원' || text.trim() === '@Kyusik Shin') {
     return client.replyMessage(event.replyToken, {
       type: 'text',
       text,
