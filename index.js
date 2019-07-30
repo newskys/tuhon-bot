@@ -181,7 +181,7 @@ function handleEvent(event) {
 
       let print = '💳공포의 정산타임💸\n\n';
       for (var i = 0; i < name.length; i++) {
-        print += `🏷${name[i]}: ${expense[i]}\n`;
+        print += `${name[i]}: ${expense[i]}\n`;
       }
 
       const divide = Math.ceil(sum / count);
