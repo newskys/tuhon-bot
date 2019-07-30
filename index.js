@@ -163,9 +163,9 @@ function handleEvent(event) {
     );
   }
 
-  if (text.startsWith('!엔빵계산')) {
+  if (text.startsWith('!엔빵')) {
     try {
-      var contents = text.split('!엔빵계산')[1].trim();
+      var contents = text.split('!엔빵')[1].trim();
       const countRegex = /([\d]+)명/;
       const receiptRegex = /(.+) ([\d]+)/g;
       const count = contents.match(countRegex)[1];
@@ -179,13 +179,13 @@ function handleEvent(event) {
 
       const sum = expense.reduce((acc, val) => acc + val);
 
-      let print = '💰공포의 정산타임💸\n\n';
+      let print = '💳공포의 정산타임💸\n\n';
       for (var i = 0; i < name.length; i++) {
-        print += `${name[i]}: ${expense[i]}\n`;
+        print += `🏷${name[i]}: ${expense[i]}\n`;
       }
 
       const divide = Math.ceil(sum / count);
-      print += `${sum} / ${count} = ${divide}\n\n`;
+      print += `${sum}원 ÷ ${count}명 = ${divide}원\n\n`;
       print += `인당 ${divide}원!`;
 
       return client.replyMessage(event.replyToken, {
