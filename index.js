@@ -267,7 +267,7 @@ function handleEvent(event) {
         weekBreads.join('\n');
         return client.replyMessage(event.replyToken, {
           type: 'text',
-          text: `🍞오늘의 빵🍞\n${todayBread.name}\n\n🍞주간 빵🍞\n${weekBreads.join('\n')}`,
+          text: `🍞오늘의 빵: ${todayBread.name}🍞\n\n🍞주간 빵🍞\n${weekBreads.join('\n')}`,
         })
       }
     )
