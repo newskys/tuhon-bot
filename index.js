@@ -5,6 +5,7 @@ const line = require('@line/bot-sdk');
 const mongoose = require('mongoose');
 const Bread = require('./model/bread');
 const EscapeRoom = require('./model/escapeRoom');
+const Expense = require('./model/expense');
 const datefns = require('date-fns');
 const koLocale = require('date-fns/locale/ko');
 const { formatToTimeZone } = require('date-fns-timezone');
@@ -187,6 +188,8 @@ function handleEvent(event) {
       const divide = Math.ceil(sum / count);
       print += `${sum}원 ÷ ${count}명 = ${divide}원\n\n`;
       print += `인당 ${divide}원!`;
+
+      Expense.create({ receipt: print, expense: sum, date: new Date(), });  
 
       return client.replyMessage(event.replyToken, {
         type: 'text',
