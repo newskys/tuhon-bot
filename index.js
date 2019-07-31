@@ -90,6 +90,45 @@ app.post('/callback', line.middleware(config), (req, res) => {
   });
 const client = new line.Client(config);
 
+// var contents = '가나다라\n마바사아 1000\ntest2 1100\n10명';
+// const countRegex = /([\d]+)명/;
+// const receiptRegex = /(.+) ([\d]+)/g;
+// const receiptMatch = contents.match(receiptRegex);
+// const count = contents.match(countRegex)[1];
+// // contents = contents.replace(countRegex, '').trim();
+// var matches, name = [], expense = [];
+// while (matches = receiptRegex.exec(contents)) {
+//   name.push(matches[1]);
+//   expense.push(parseInt(matches[2]));
+// }
+
+// console.log('name', name);
+// console.log('expense', expense);
+
+// const sum = expense.reduce((acc, val) => acc + val);
+// console.log('sum', sum);
+// console.log('divide', Math.ceil(sum / 12.512));
+
+// let print = '💰공포의 정산타임💸\n\n';
+// for (var i = 0; i < name.length; i++) {
+//   print += `${name[i]}: ${expense[i]}\n`;
+// }
+
+// const divide = Math.ceil(sum / count);
+// print += `${sum} / ${count} = ${divide}\n\n`;
+// print += `인당 ${divide}원!`;
+
+// console.log(print);
+
+// console.log('output', output);
+// const content = contents.replace(countRegex, '').split('\n');
+// console.log('content', content);
+// const reducer = (accumulator, currentValue) => accumulator + currentValue;
+// const k = content.map(line => line.split(' ').join());
+// console.log('k', k);
+// const sum = content.map(line => line.split(' ')[1]).forEach(item => console.log('item', item));//reduce(reducer);
+// console.log('sum', sum);
+
 function handleEvent(event) {
 //   if (event.type !== 'message' || event.message.type !== 'text') {
 //     return Promise.resolve(null);
@@ -124,6 +163,44 @@ function handleEvent(event) {
     );
   }
 
+  if (text.startsWith('!엔빵')) {
+    try {
+      var contents = text.split('!엔빵')[1].trim();
+      const countRegex = /([\d]+)명/;
+      const receiptRegex = /(.+) ([\d]+)/g;
+      const count = contents.match(countRegex)[1];
+      
+      var matches, name = [], expense = [];
+
+      while (matches = receiptRegex.exec(contents)) {
+        name.push(matches[1]);
+        expense.push(parseInt(matches[2]));
+      }
+
+      const sum = expense.reduce((acc, val) => acc + val);
+
+      let print = '💳공포의 정산타임💸\n\n';
+      for (var i = 0; i < name.length; i++) {
+        print += `${name[i]}: ${expense[i]}\n`;
+      }
+
+      const divide = Math.ceil(sum / count);
+      print += `${sum}원 ÷ ${count}명 = ${divide}원\n\n`;
+      print += `인당 ${divide}원!`;
+
+      return client.replyMessage(event.replyToken, {
+        type: 'text',
+        text: print,
+      })
+    } catch (e) {
+      console.error(e);
+      return client.replyMessage(event.replyToken, {
+        type: 'text',
+        text: '계산을 할 수 없습니다.',
+      })
+    }
+  }
+
   if (text === '!내일의빵') {
     Bread.findOne({date: datefns.addDays(datefns.startOfToday(), 1)})
     .then(
@@ -142,6 +219,7 @@ function handleEvent(event) {
       })
     );
   }
+
   if (text === '!크로와상' || 
   text === '!깜빠뉴' || 
   text === '!베이글' || 
