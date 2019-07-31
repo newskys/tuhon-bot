@@ -178,13 +178,16 @@ function handleEvent(event) {
           const korWeekName = datefns.format(bread.date, formatShortWeek, { locale: koLocale });
           return `${korWeekName}: ${bread.name}`;
         });
+
+        const todayBread = breads.filter(bread => bread.date === datefns.startOfToday());
+        console.log('todayBread', todayBread);
         
         console.log('weekBreads', weekBreads);
 
         weekBreads.join('\n');
         return client.replyMessage(event.replyToken, {
           type: 'text',
-          text: `🍞주간 빵🍞\n\n${weekBreads.join('\n')}`,
+          text: `🍞오늘의 빵🍞\n${todayBread.name}\n\n🍞주간 빵🍞\n${weekBreads.join('\n')}`,
         })
       }
     )
@@ -222,7 +225,7 @@ function handleEvent(event) {
         console.error(e);
         return client.replyMessage(event.replyToken, {
           type: 'text',
-          text: '다음 방탈출이 없습니다.',
+          text: '다음 방탈출이 없어요.\n빨리 다음 거 예약해보아요~',
           });
       }
     });
