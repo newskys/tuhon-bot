@@ -257,7 +257,11 @@ function handleEvent(event) {
           return `${korWeekName}: ${bread.name}`;
         });
 
-        const todayBread = breads.filter(bread => bread.date === datefns.startOfToday());
+        const todayBread = breads.filter(bread => {
+          console.log('breaddate', bread.date);
+          console.log('datefns.startOfToday()', datefns.startOfToday());
+          return bread.date === datefns.startOfToday();
+        });
         console.log('todayBread', todayBread);
         
         console.log('weekBreads', weekBreads);
