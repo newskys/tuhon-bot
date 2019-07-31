@@ -257,7 +257,7 @@ function handleEvent(event) {
           return `${korWeekName}: ${bread.name}`;
         });
 
-        const todayBread = breads.filter(bread => {
+        const todayBread = breads.find(bread => {
           return datefns.getDate(bread.date) === datefns.getDate(new Date());
         });
         console.log('todayBread', todayBread);
