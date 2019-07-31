@@ -258,11 +258,7 @@ function handleEvent(event) {
         });
 
         const todayBread = breads.filter(bread => {
-          console.log('breaddate', bread.date);
-          console.log('datefns.startOfToday()', datefns.startOfToday());
-          console.log('bread.date === datefns.startOfToday()', bread.date === datefns.startOfToday());
-          console.log('bread.date == datefns.startOfToday()', bread.date == datefns.startOfToday());
-          return bread.date === datefns.startOfToday();
+          return datefns.getDate(bread.date) === datefns.getDate(new Date());
         });
         console.log('todayBread', todayBread);
         
