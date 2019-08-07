@@ -260,11 +260,11 @@ function handleEvent(event) {
           isToday = datefns.getDate(bread.date) === datefns.getDate(new Date());
           return `${korWeekName}: ${bread.name}${isToday ? '🍞':''}`;
         });
-        
+
         weekBreads.join('\n');
         return client.replyMessage(event.replyToken, {
           type: 'text',
-          text: `🍞주간 빵🍞\n${weekBreads.join('\n')}`,
+          text: `🍞주간 빵🍞\n\n${weekBreads.join('\n')}`,
         })
       }
     )
