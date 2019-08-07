@@ -257,15 +257,14 @@ function handleEvent(event) {
       breads => {
         const weekBreads = breads.map(bread => {
           const korWeekName = datefns.format(bread.date, formatShortWeek, { locale: koLocale });
-          return `${korWeekName}: ${bread.name}`;
+          isToday = datefns.getDate(bread.date) === datefns.getDate(new Date());
+          return `${korWeekName}: ${bread.name}${isToday ? '🍞':''}`;
         });
-
-        const todayBread = breads.find(bread => datefns.getDate(bread.date) === datefns.getDate(new Date()));
-
+        
         weekBreads.join('\n');
         return client.replyMessage(event.replyToken, {
           type: 'text',
-          text: `🍞오늘의 빵: ${todayBread.name}🍞\n\n🍞주간 빵🍞\n${weekBreads.join('\n')}`,
+          text: `🍞주간 빵🍞\n${weekBreads.join('\n')}`,
         })
       }
     )
