@@ -245,11 +245,11 @@ function handleEvent(event) {
         console.log('bread', bread);
         const formattedWeek = datefns.format(bread.date, formatDayAndWeek, { locale: koLocale });
         const isFuture = bread.date > new Date();
-        const distanceInWords = console.log(datefns.distanceInWords(
+        const distanceInWords = datefns.distanceInWords(
           new Date(),
           bread.date,
           {locale: koLocale}
-        ));
+        );
         // const diff = Math.abs(datefns.differenceInCalendarDays(bread.date, new Date()));
         
         const extraText = isFuture ? `${distanceInWords} 남았습니다.` : `${distanceInWords} 경과했습니다.`;
