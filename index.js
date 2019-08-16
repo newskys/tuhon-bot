@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const Bread = require('./model/bread');
 const EscapeRoom = require('./model/escapeRoom');
 const Todo = require('./model/todo');
+const Expense = require('./model/expense');
 const datefns = require('date-fns');
 const koLocale = require('date-fns/locale/ko');
 const { formatToTimeZone } = require('date-fns-timezone');
@@ -160,6 +161,12 @@ app.post('/callback', line.middleware(config), (req, res) => {
   });
 const client = new line.Client(config);
 
+
+// console.log(datefns.distanceInWords(
+//   new Date(),
+//   new Date(2019, 7, 10),
+//   {locale: koLocale}
+// ));
 // var contents = '가나다라\n마바사아 1000\ntest2 1100\n10명';
 // const countRegex = /([\d]+)명/;
 // const receiptRegex = /(.+) ([\d]+)/g;
@@ -258,6 +265,8 @@ function handleEvent(event) {
       print += `${sum}원 ÷ ${count}명 = ${divide}원\n\n`;
       print += `인당 ${divide}원!`;
 
+      Expense.create({ receipt: print, expense: sum, date: new Date(), });  
+
       return client.replyMessage(event.replyToken, {
         type: 'text',
         text: print,
@@ -306,8 +315,14 @@ function handleEvent(event) {
         console.log('bread', bread);
         const formattedWeek = datefns.format(bread.date, formatDayAndWeek, { locale: koLocale });
         const isFuture = bread.date > new Date();
-        const diff = Math.abs(datefns.differenceInCalendarDays(bread.date, new Date()));
-        const extraText = isFuture ? `${diff}일 남았습니다.` : `${diff}일 경과했습니다.`;
+        const distanceInWords = datefns.distanceInWords(
+          new Date(),
+          bread.date,
+          {locale: koLocale}
+        );
+        // const diff = Math.abs(datefns.differenceInCalendarDays(bread.date, new Date()));
+        
+        const extraText = isFuture ? `${distanceInWords} 남았습니다.` : `${distanceInWords} 경과했습니다.`;
         return client.replyMessage(event.replyToken, {
           type: 'text',
           text: bread ? `🍞${breadText}🍞\n\n${formattedWeek} 등장${isFuture ? '합니다' : '했습니다'}!\n${extraText}` : `빵 정보가 없어요!`,
@@ -324,10 +339,9 @@ function handleEvent(event) {
       breads => {
         const weekBreads = breads.map(bread => {
           const korWeekName = datefns.format(bread.date, formatShortWeek, { locale: koLocale });
-          return `${korWeekName}: ${bread.name}`;
+          isToday = datefns.getDate(bread.date) === datefns.getDate(new Date());
+          return `${korWeekName}: ${bread.name}${isToday ? '🍞':''}`;
         });
-        
-        console.log('weekBreads', weekBreads);
 
         weekBreads.join('\n');
         return client.replyMessage(event.replyToken, {
@@ -362,15 +376,20 @@ function handleEvent(event) {
     .then(escapeRoom => {
       try {
         const formattedDay = datefns.format(escapeRoom.date, formatFullDate, { locale: koLocale });
+        const distanceInWords = datefns.distanceInWords(
+          new Date(),
+          escapeRoom.date,
+          {locale: koLocale}
+        );
       return client.replyMessage(event.replyToken, {
         type: 'text',
-        text: `🧩다음 방탈출🔐\n${escapeRoom.name}\n${escapeRoom.brand}\n\n${formattedDay}`,
+        text: `🧩다음 방탈출🔐\n${escapeRoom.name}\n${escapeRoom.brand}\n\n${formattedDay}\n${distanceInWords} 남음`,
         });
       } catch (e) {
         console.error(e);
         return client.replyMessage(event.replyToken, {
           type: 'text',
-          text: '다음 방탈출이 없습니다.',
+          text: '다음 방탈출이 없어요.\n빨리 다음 거 예약해보아요~',
           });
       }
     });
