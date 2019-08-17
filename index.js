@@ -4,6 +4,7 @@ const express = require('express');
 const line = require('@line/bot-sdk');
 const mongoose = require('mongoose');
 const Bread = require('./model/bread');
+const Expense = require('./model/expense');
 const EscapeRoom = require('./model/escapeRoom');
 const datefns = require('date-fns');
 const koLocale = require('date-fns/locale/ko');
