@@ -10,7 +10,6 @@ const Expense = require('./model/expense');
 const datefns = require('date-fns');
 const koLocale = require('date-fns/locale/ko');
 const { formatToTimeZone } = require('date-fns-timezone');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 
 mongoose.connect(process.env.MONGO_URI)
