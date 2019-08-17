@@ -5,12 +5,9 @@ const line = require('@line/bot-sdk');
 const mongoose = require('mongoose');
 const Bread = require('./model/bread');
 const EscapeRoom = require('./model/escapeRoom');
-const Todo = require('./model/todo');
-const Expense = require('./model/expense');
 const datefns = require('date-fns');
 const koLocale = require('date-fns/locale/ko');
 const { formatToTimeZone } = require('date-fns-timezone');
-const cors = require('cors');
 
 mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log('connected to mongodb'))
@@ -29,9 +26,6 @@ const formatShortWeek = 'ddd';
 const formatDayAndWeek = 'Do (dddd)';
 
 const app = express();
-app.use(cors());
-app.use(express.urlencoded());
-app.use(express.json());
 
 // const text = '크로와상';
 // Bread.findOne()
@@ -70,70 +64,6 @@ app.use(express.json());
 
 app.get('/',(req, res) => {
   res.sendFile(__dirname + '/index.html');
-});
-
-app.get('/reactstudy/:id/todo', (req, res) => {
-  try {
-    const id = req.params.id;
-
-    Todo
-    .find({ id })
-    .then(todos => {
-      console.log(todos);
-      return res.status(200).send(todos);
-    })
-    .catch(err => {
-      console.error(err);
-      return res.status(500).send(err);
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send(err);
-  }
-});
-
-app.delete('/reactstudy/:id/todo/:todoId', (req, res) => {
-  try {
-    const id = req.params.id;
-    const todoId = req.params.todoId;
-
-    console.log('todoId', todoId);
-
-    Todo
-    .findByIdAndRemove(todoId)
-    // .deleteOne({ todoId })
-    // .where('id').equals(id)
-    .then(result => {
-      console.log(result);
-      return res.status(200).send(result);
-    })
-    .catch(err => {
-      console.error(err);
-      return res.status(500).send(err);
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send(err);
-  }
-});
-
-app.post('/reactstudy/:id/todo', (req, res) => {
-  try {
-  console.log('req', req.params);
-  console.log('req.body', req.body);
-    const id = req.params.id;
-    const todo = req.body.todo;
-
-    Todo
-    .create({ id, todo, })
-    .catch(err => {
-      console.error(err);
-      return res.status(500).send(err);
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send(err);
-  }
 });
 
 app.post('/webhook', line.middleware(config), (req, res) => {
