@@ -126,12 +126,15 @@ app.post('/reactstudy/:id/todo', (req, res) => {
 
     Todo
     .create({ id, todo, })
+    .then(result => {
+      res.status(200).send(result);
+    })
     .catch(err => {
       console.error(err);
       return res.status(500).send(err);
     });
   } catch (err) {
-    console.error(err);
+    console.error(err).send();
     res.status(500).send(err);
   }
 });
