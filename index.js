@@ -72,6 +72,13 @@ app.get('/',(req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/reactstudy/member', (req, res) => {
+  const members = ['kyusik', 'yujeong', 'xeme', 'jinsu', 'kyungmin'];
+  const randomIndex = Math.floor(Math.random() * members.length);
+  console.log(randomIndex);
+  res.status(200).send({memberName: members[randomIndex]});
+});
+
 app.get('/reactstudy/:id/todo', (req, res) => {
   try {
     const id = req.params.id;
