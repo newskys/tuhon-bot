@@ -30,7 +30,7 @@ const formatDayAndWeek = 'Do (dddd)';
 
 const app = express();
 app.use(cors());
-// app.use(express.urlencoded());
+app.use(express.urlencoded());
 // app.use(express.json());
 
 // const text = '크로와상';
