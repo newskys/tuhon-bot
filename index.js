@@ -74,9 +74,11 @@ app.get('/',(req, res) => {
 
 app.get('/reactstudy/member', (req, res) => {
   const members = ['kyusik', 'yujeong', 'xeme', 'jinsu', 'kyungmin'];
+  const colors = ['white', 'black', 'red', 'blue', 'green'];
   const randomIndex = Math.floor(Math.random() * members.length);
-  console.log(randomIndex);
-  res.status(200).send({memberName: members[randomIndex]});
+  const randomColorIndex = Math.floor(Math.random() * colors.length);
+
+  res.status(200).send({memberName: members[randomIndex], colorName: colors[randomColorIndex], });
 });
 
 app.get('/reactstudy/:id/todo', (req, res) => {
